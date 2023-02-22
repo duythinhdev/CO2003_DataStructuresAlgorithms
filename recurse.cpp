@@ -78,6 +78,7 @@ bool isPalindromeRecurse(const string& str) {
         return false;
     }
     else {
+        cout << str.substr(1, len - 2);
         return isPalindrome(str.substr(1, len - 2));
     }
 }
@@ -102,13 +103,41 @@ void printArrayFor(int n) {
         }
     }
 }
+void printHailstone(int number){
+     cout << number;
+     if (number == 1) {
+          return;
+     }
+     else if (number % 2 == 0) {
+          cout << " ";
+          printHailstone(number / 2);
+     }
+     else {
+          cout << " ";
+           printHailstone(number * 3 + 1);
+     }
+}
+void printHailstoneLoop(int number) {
+    cout << number; 
+    while (number != 1)
+    {
+        if (number % 2 == 0) {
+            number /= 2;
+        }
+        else {
+            number = number * 3 + 1;
+        }
+        cout << " " << number;  // print the next number with a space separator
+    }
+}
 int main() {
     // cout << isPalindrome("racecar");
     // printPattern(14);
     // int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
     // findMax1(arr);
     // cout << findMax(arr, 10);
-    //cout << isPalindromeRecurse("racecar");
-    printArrayFor(16);
+    // printHailstone(32);
+    // printArrayFor(16);
+    printHailstoneLoop(32);
     return 0;
 }
