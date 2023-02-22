@@ -69,11 +69,46 @@ bool isPalindrome(const string& str) {
     }
     return true;
 }
+bool isPalindromeRecurse(const string& str) {
+    int len = str.length();
+    if (len <= 1) {
+        return true;
+    }
+    else if (str[0] != str[len - 1]) {
+        return false;
+    }
+    else {
+        return isPalindrome(str.substr(1, len - 2));
+    }
+}
+void printArray(int n)
+{
+    if (n == 0) {
+        cout << "0";
+    }
+    else {
+        printArray(n - 1);
+        cout << ", " << n;
+    }
+}
+void printArrayFor(int n) {
+    for (int i = 0; i <= n; i++) {
+        if (i == 0) {
+            cout << "0";
+        }
+        else {
+            cout << ", ";
+            cout << i;
+        }
+    }
+}
 int main() {
-    cout << isPalindrome("racecar");
+    // cout << isPalindrome("racecar");
     // printPattern(14);
     // int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
     // findMax1(arr);
     // cout << findMax(arr, 10);
+    //cout << isPalindromeRecurse("racecar");
+    printArrayFor(16);
     return 0;
 }
