@@ -3,6 +3,8 @@
 #include<string>
 #include<regex>
 #include<string.h>
+#include <string>
+#include <sstream>
 using namespace std;
 
 void printPattern(int n) {
@@ -148,6 +150,55 @@ int myArrayToIntRecurse(char* str, int n) {
         return myArrayToIntRecurse(str, n - 1) * 10 + (str[n - 1] - '0');
     }
 }
+int strLen(char* str) {
+     // int newString = sizeof(str);
+    // int count = 0; 
+    // for (int i = 0; i < newString; i++) {
+        // count++;
+    // }
+    // return count;
+    int len;
+    for (len = 0; str[len] != '\0'; len++);
+    return len;
+}
+int strLenRecurse(char* str) {
+    if (*str == '\0') {
+        return 0;
+    }
+    else {
+        return 1 + strLen(str + 1);
+    }
+}
+string reverseSentence(string s) {
+    // Use a stringstream to split the sentence into words
+    stringstream ss(s);
+    string word;
+    string reversedSentence;
+
+    // Read each word from the stringstream and prepend it to the reversed sentence
+    while (ss >> word) {
+        reversedSentence = word + " " + reversedSentence;
+    }
+
+    // Remove the trailing space character and return the reversed sentence
+    if (!reversedSentence.empty()) {
+        reversedSentence.pop_back();
+    }
+    return reversedSentence;
+}
+int gcd(int a, int b) {
+    while (b != 0) {
+        int remainder = a % b;
+        a = b;
+        b = remainder;
+    }
+    return a;
+}
+
+int findLCM(int a, int b) {
+    int lcm = (a * b) / gcd(a, b);
+    return lcm;
+}
 int main() {
     // cout << isPalindrome("racecar");
     // printPattern(14);
@@ -157,7 +208,13 @@ int main() {
     // printHailstone(32);
     // printArrayFor(16);
     // printHailstoneLoop(32);
-    char str[] = "2027";
-    cout << myArrayToIntRecurse(str, 4);
+    // char str[] = "2027";
+    // cout << myArrayToIntRecurse(str, 4);
+    // char str[] = "";
+    // cout << strLenRecurse(str);
+    // string s = "Hello world, this is a sentence.";
+    // string reversed = reverseSentence(s);
+    // cout << reversed;
+    cout << findLCM(10,102);
     return 0;
 }
