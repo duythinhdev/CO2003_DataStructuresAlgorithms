@@ -114,20 +114,38 @@ void printHailstone(int number){
      }
      else {
           cout << " ";
-           printHailstone(number * 3 + 1);
+          printHailstone(number * 3 + 1);
      }
 }
 void printHailstoneLoop(int number) {
-    cout << number; 
-    while (number != 1)
-    {
+    // cout << number;
+    while (number != 1) {
         if (number % 2 == 0) {
             number /= 2;
         }
         else {
             number = number * 3 + 1;
         }
-        cout << " " << number;  // print the next number with a space separator
+        cout << " " << number;
+    }
+}
+int myArrayToInt(char* str, int n) {
+    int num = 0;
+    int digit;
+    int i = 0;
+    while (i < n) {
+        digit = (int)(str[i] - '0');
+        num = num * 10 + digit;
+        i++;
+    }
+    return num;
+}
+int myArrayToIntRecurse(char* str, int n) {
+    if (n == 0) {
+        return 0;
+    }
+    else {
+        return myArrayToIntRecurse(str, n - 1) * 10 + (str[n - 1] - '0');
     }
 }
 int main() {
@@ -138,6 +156,8 @@ int main() {
     // cout << findMax(arr, 10);
     // printHailstone(32);
     // printArrayFor(16);
-    printHailstoneLoop(32);
+    // printHailstoneLoop(32);
+    char str[] = "2027";
+    cout << myArrayToIntRecurse(str, 4);
     return 0;
 }
