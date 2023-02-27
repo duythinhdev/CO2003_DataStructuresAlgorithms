@@ -10,7 +10,7 @@ using namespace std;
 void printPattern(int n) {
     bool isPlus = false;
     int lon = n;
-    for (int i = 0 ; i < lon; i ++) {
+    for (int i = 0; i < lon; i++) {
         if (!isPlus) {
             cout << n << " ";
             n -= 5;
@@ -55,14 +55,14 @@ void findMax1(int* arr) {
             temp = arr[i];
         }
     }
-    cout<< temp;
+    cout << temp;
 }
 bool isPalindrome(const string& str) {
     if (str.empty())
-       return false;
+        return false;
     int i = 0;
     int j = str.length() - 1;
-    while (i < j){
+    while (i < j) {
         if (str[i] != str[j]) {
             return false;
         }
@@ -105,19 +105,19 @@ void printArrayFor(int n) {
         }
     }
 }
-void printHailstone(int number){
-     cout << number;
-     if (number == 1) {
-          return;
-     }
-     else if (number % 2 == 0) {
-          cout << " ";
-          printHailstone(number / 2);
-     }
-     else {
-          cout << " ";
-          printHailstone(number * 3 + 1);
-     }
+void printHailstone(int number) {
+    cout << number;
+    if (number == 1) {
+        return;
+    }
+    else if (number % 2 == 0) {
+        cout << " ";
+        printHailstone(number / 2);
+    }
+    else {
+        cout << " ";
+        printHailstone(number * 3 + 1);
+    }
 }
 void printHailstoneLoop(int number) {
     // cout << number;
@@ -151,12 +151,12 @@ int myArrayToIntRecurse(char* str, int n) {
     }
 }
 int strLen(char* str) {
-     // int newString = sizeof(str);
-    // int count = 0; 
-    // for (int i = 0; i < newString; i++) {
-        // count++;
-    // }
-    // return count;
+    // int newString = sizeof(str);
+   // int count = 0; 
+   // for (int i = 0; i < newString; i++) {
+       // count++;
+   // }
+   // return count;
     int len;
     for (len = 0; str[len] != '\0'; len++);
     return len;
@@ -199,6 +199,23 @@ int findLCM(int a, int b) {
     int lcm = (a * b) / gcd(a, b);
     return lcm;
 }
+int mininumBracketAdd(string s) {
+    int bal = 0;
+    int ans = 0;
+
+    for (int i = 0; i < s.length(); ++i) {
+
+        bal += s[i] == '(' ? 1 : -1;
+
+        // It is guaranteed bal >= -1
+        if (bal == -1) {
+            ans += 1;
+            bal += 1;
+        }
+    }
+
+    return bal + ans;
+}
 int main() {
     // cout << isPalindrome("racecar");
     // printPattern(14);
@@ -215,6 +232,7 @@ int main() {
     // string s = "Hello world, this is a sentence.";
     // string reversed = reverseSentence(s);
     // cout << reversed;
-    cout << findLCM(10,102);
+    // cout << findLCM(10, 102);
+    cout << mininumBracketAdd(")))((");
     return 0;
 }
