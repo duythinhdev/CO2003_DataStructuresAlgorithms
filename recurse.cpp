@@ -216,6 +216,34 @@ int mininumBracketAdd(string s) {
 
     return bal + ans;
 }
+
+int countOpening(std::string s, int i) {
+    if (i == s.length()) {
+        return 0;
+    }
+    int count = s[i] == '(' ? 1 : -1;
+    if (count < 0) {
+        return 1 + countOpening(s, i + 1);
+    }
+    return count + countOpening(s, i + 1);
+}
+
+int countClosing(std::string s, int i) {
+    if (i == -1) {
+        return 0;
+    }
+    int count = s[i] == ')' ? 1 : -1;
+    if (count < 0) {
+        return 1 + countClosing(s, i - 1);
+    }
+    return count + countClosing(s, i - 1);
+}
+
+int minimumBracketAddRecurse(std::string s) {
+    int openingCount = countOpening(s, 0);
+    int closingCount = countClosing(s, s.length() - 1);
+    return openingCount + closingCount;
+}
 int main() {
     // cout << isPalindrome("racecar");
     // printPattern(14);
@@ -233,6 +261,6 @@ int main() {
     // string reversed = reverseSentence(s);
     // cout << reversed;
     // cout << findLCM(10, 102);
-    cout << mininumBracketAdd(")))((");
+    cout << minimumBracketAddRecurse(")))((");
     return 0;
 }
