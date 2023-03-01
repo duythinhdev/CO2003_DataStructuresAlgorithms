@@ -26,6 +26,18 @@ void printPattern(int n) {
         }
     }
 }
+void printPatternRecurse(int n) {
+    if (n <= 0) {
+        cout << n;
+        return;
+    }
+    cout << n << " ";
+    printPattern(n - 5);
+    if( n == -1){
+      printPattern(n + 5);
+    }
+    cout << " " << n;        
+}
 int findMax(int* arr, int length)
 {
     /*
