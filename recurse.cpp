@@ -182,21 +182,15 @@ int strLenRecurse(char* str) {
     }
 }
 string reverseSentence(string s) {
-    // Use a stringstream to split the sentence into words
-    stringstream ss(s);
-    string word;
-    string reversedSentence;
-
-    // Read each word from the stringstream and prepend it to the reversed sentence
-    while (ss >> word) {
-        reversedSentence = word + " " + reversedSentence;
+    size_t spaceIndex = s.find(' ');
+    if (spaceIndex == string::npos) {
+        return s;
     }
-
-    // Remove the trailing space character and return the reversed sentence
-    if (!reversedSentence.empty()) {
-        reversedSentence.pop_back();
+    else {
+        string firstWord = s.substr(0, spaceIndex);
+        string restOfsentense = s.substr(spaceIndex + 1);
+        return reverseSentence(restOfsentense) + ' ' + firstWord;
     }
-    return reversedSentence;
 }
 int gcd(int a, int b) {
     while (b != 0) {
