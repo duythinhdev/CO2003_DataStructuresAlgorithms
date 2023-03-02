@@ -1,26 +1,26 @@
 // Implement methods add, size in template class SLinkedList (which implements List ADT) representing the singly linked list with type T with the initialized frame. The description of each method is given in the code.
 
-For example:
+// For example:
 
-Test	Result
-SLinkedList<int> list;
-int size = 10;
+// Test	Result
+// SLinkedList<int> list;
+// int size = 10;
 
-for(int index = 0; index < size; index++){
-    list.add(index);
-}
+// for(int index = 0; index < size; index++){
+    // list.add(index);
+// }
 
-cout << list.toString();
-[0,1,2,3,4,5,6,7,8,9]
-SLinkedList<int> list;
-int size = 10;
+// cout << list.toString();
+// [0,1,2,3,4,5,6,7,8,9]
+// SLinkedList<int> list;
+// int size = 10;
 
-for(int index = 0; index < size; index++){
-    list.add(0, index);
-}
+// for(int index = 0; index < size; index++){
+    // list.add(0, index);
+// }
 
-cout << list.toString();
-[9,8,7,6,5,4,3,2,1,0]
+// cout << list.toString();
+// [9,8,7,6,5,4,3,2,1,0]
 
 template <class T>
 class SLinkedList {
