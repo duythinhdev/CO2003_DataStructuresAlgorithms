@@ -10,7 +10,7 @@ using namespace std;
 void printPattern(int n) {
     bool isPlus = false;
     int lon = n;
-    for (int i = 0 ; i < lon; i ++) {
+    for (int i = 0; i < lon; i++) {
         if (!isPlus) {
             cout << n << " ";
             n -= 5;
@@ -25,6 +25,18 @@ void printPattern(int n) {
             n += 5;
         }
     }
+}
+void printPatternRecurse(int n) {
+    if (n <= 0) {
+        cout << n;
+        return;
+    }
+    cout << n << " ";
+    printPattern(n - 5);
+    if( n == -1){
+      printPattern(n + 5);
+    }
+    cout << " " << n;        
 }
 int findMax(int* arr, int length)
 {
@@ -55,14 +67,14 @@ void findMax1(int* arr) {
             temp = arr[i];
         }
     }
-    cout<< temp;
+    cout << temp;
 }
 bool isPalindrome(const string& str) {
     if (str.empty())
-       return false;
+        return false;
     int i = 0;
     int j = str.length() - 1;
-    while (i < j){
+    while (i < j) {
         if (str[i] != str[j]) {
             return false;
         }
@@ -105,19 +117,19 @@ void printArrayFor(int n) {
         }
     }
 }
-void printHailstone(int number){
-     cout << number;
-     if (number == 1) {
-          return;
-     }
-     else if (number % 2 == 0) {
-          cout << " ";
-          printHailstone(number / 2);
-     }
-     else {
-          cout << " ";
-          printHailstone(number * 3 + 1);
-     }
+void printHailstone(int number) {
+    cout << number;
+    if (number == 1) {
+        return;
+    }
+    else if (number % 2 == 0) {
+        cout << " ";
+        printHailstone(number / 2);
+    }
+    else {
+        cout << " ";
+        printHailstone(number * 3 + 1);
+    }
 }
 void printHailstoneLoop(int number) {
     // cout << number;
@@ -151,12 +163,12 @@ int myArrayToIntRecurse(char* str, int n) {
     }
 }
 int strLen(char* str) {
-     // int newString = sizeof(str);
-    // int count = 0; 
-    // for (int i = 0; i < newString; i++) {
-        // count++;
-    // }
-    // return count;
+    // int newString = sizeof(str);
+   // int count = 0; 
+   // for (int i = 0; i < newString; i++) {
+       // count++;
+   // }
+   // return count;
     int len;
     for (len = 0; str[len] != '\0'; len++);
     return len;
@@ -170,21 +182,15 @@ int strLenRecurse(char* str) {
     }
 }
 string reverseSentence(string s) {
-    // Use a stringstream to split the sentence into words
-    stringstream ss(s);
-    string word;
-    string reversedSentence;
-
-    // Read each word from the stringstream and prepend it to the reversed sentence
-    while (ss >> word) {
-        reversedSentence = word + " " + reversedSentence;
+    size_t spaceIndex = s.find(' ');
+    if (spaceIndex == string::npos) {
+        return s;
     }
-
-    // Remove the trailing space character and return the reversed sentence
-    if (!reversedSentence.empty()) {
-        reversedSentence.pop_back();
+    else {
+        string firstWord = s.substr(0, spaceIndex);
+        string restOfsentense = s.substr(spaceIndex + 1);
+        return reverseSentence(restOfsentense) + ' ' + firstWord;
     }
-    return reversedSentence;
 }
 int gcd(int a, int b) {
     while (b != 0) {
@@ -198,6 +204,51 @@ int gcd(int a, int b) {
 int findLCM(int a, int b) {
     int lcm = (a * b) / gcd(a, b);
     return lcm;
+}
+int mininumBracketAdd(string s) {
+    int bal = 0;
+    int ans = 0;
+
+    for (int i = 0; i < s.length(); ++i) {
+
+        bal += s[i] == '(' ? 1 : -1;
+
+        // It is guaranteed bal >= -1
+        if (bal == -1) {
+            ans += 1;
+            bal += 1;
+        }
+    }
+
+    return bal + ans;
+}
+
+int countOpening(std::string s, int i) {
+    if (i == s.length()) {
+        return 0;
+    }
+    int count = s[i] == '(' ? 1 : -1;
+    if (count < 0) {
+        return 1 + countOpening(s, i + 1);
+    }
+    return count + countOpening(s, i + 1);
+}
+
+int countClosing(std::string s, int i) {
+    if (i == -1) {
+        return 0;
+    }
+    int count = s[i] == ')' ? 1 : -1;
+    if (count < 0) {
+        return 1 + countClosing(s, i - 1);
+    }
+    return count + countClosing(s, i - 1);
+}
+
+int minimumBracketAddRecurse(std::string s) {
+    int openingCount = countOpening(s, 0);
+    int closingCount = countClosing(s, s.length() - 1);
+    return openingCount + closingCount;
 }
 int main() {
     // cout << isPalindrome("racecar");
@@ -215,6 +266,7 @@ int main() {
     // string s = "Hello world, this is a sentence.";
     // string reversed = reverseSentence(s);
     // cout << reversed;
-    cout << findLCM(10,102);
+    // cout << findLCM(10, 102);
+    cout << minimumBracketAddRecurse(")))((");
     return 0;
 }
