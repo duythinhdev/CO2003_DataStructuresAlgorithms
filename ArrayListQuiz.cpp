@@ -76,6 +76,36 @@ int buyCar(int* nums, int length, int k) {
 // Note:
 // -The iostream and vector libraries have been included and namespace std is being used.No other libraries are allowed.
 // - You can write helper functions.
+int longestSublist(vector<string>& words) {
+	// STUDENT ANSWER
+	int longestLength = 0;
+	int currentLength = 0;
+	char currentFirstLetter = '\0';
+	for (const auto& word : words) {
+		if (word.empty()) {
+			continue;
+		}
+		if (word[0] != currentFirstLetter) {
+			longestLength = max(longestLength, currentLength);
+			currentLength = 1;
+			currentFirstLetter = word[0];
+		}
+		else {
+			currentLength++;
+		}
+	}
+	longestLength = max(longestLength, currentLength);
+	return longestLength;
+}
+//Given an array of integers.
+//Your task is to implement a function with following prototype :
+//int equalSumIndex(vector<int>& nums);
+//The function returns the smallest index i such that the sum of the numbers to the left of i is equal to the sum of the numbers to the right.
+//If no such index exists, return -1.
+//
+//Note:
+//-The iostream and vector libraries have been included and namespace std is being used.No other libraries are allowed.
+//- You can write helper functions.
 int equalSumIndex(vector<int>& nums) {
 	// STUDENT ANSWER
 	//int leftSum = 0;
@@ -110,7 +140,9 @@ int main() {
 	// cout << consecutiveOnes(nums);
 	// int nums[100] = { 90,30,40,90,20 };
 	// int length = sizeof(nums) / sizeof(nums[0]);
-    //cout << buyCar(nums, length, 90) << "\n";
+    // cout << buyCar(nums, length, 90) << "\n";
+	// vector<string> words{ "faction", "fight", "and", "are", "attitude" };
+	// cout << longestSublist(words);
 	vector<int> nums{ 3, 5, 2, 7, 6, 4 };
 	cout << equalSumIndex(nums);
 	return 0;
