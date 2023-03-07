@@ -1,9 +1,11 @@
 #include "main.h"
 
-void reg(string* command);
-string* find_str(string s,string del);
-int size(string* s);
+#define ACTION_REG "REG"
+#define STR_NULL " "
 
+void reg(string command);
+int countSpace(string s, string del);
+void clearCommandData(string* line);
 void simulate(string filename, restaurant* r)
 {
 
@@ -11,42 +13,50 @@ void simulate(string filename, restaurant* r)
     ifstream myfile(filename);
     if (myfile.is_open())
     {
-        while (getline(myfile, line)) {
-            //get command
-            string* command = find_str(line, " ");
-            if(command[0] == "REG"){
-                reg(command);
+//        while (getline(myfile, line)) {
+            getline(myfile, line);
+            int end = line.find(STR_NULL);
+            string commandName = string(line.substr(0, end));
+            clearCommandData(&line);
+            //line.erase(line.begin(), line.begin() + end + 1);
+            if(commandName == ACTION_REG){
+                reg(line);
             }
-        }
+//        }
         myfile.close();
     }
 }
-void reg(string* command){
-    cout<<size(command);
-    if(size(command) == 4){
-        // co id
+
+void reg(string command){
+    string name;
+    string id;
+    string age;
+    if(countSpace(command," ") == 2) {
+        // has id
+        id = command.substr(0, command.find(" "));
+        clearCommandData(&command);
+        name = command.substr(0, command.find(" "));
+        clearCommandData(&command);
+        age = command.substr(0, command.find(" "));
+    }else{
+        name = command.substr(0, command.find(" "));
+        clearCommandData(&command);
+        age = command.substr(0, command.find(" "));
+         // don't has id
     }
 }
-int size(string* command){
+int countSpace(string command, string del){
+    int end = command.find(del);
     int count = 0;
-    for(int i = 0; i < 5;i ++){
-        if(!command[i].empty()){
-            count++;
-        }
-    }
-    return count;
-}
-string* find_str(string s, string del) {
-    int end = s.find(del);
-    string* array = new string[5];
-    int index = 0;
     while (end != -1) {
-        array[index] = string(s.substr(0, end));
-        index++;
-        s.erase(s.begin(), s.begin() + end + 1);
-        end = s.find(del);
+        count++;
+        command.erase(command.begin(), command.begin() + end + 1);
+        end = command.find(del);
     }
 
-    array[index] =  string(s.substr(0, end));
-    return array;
+    return count;
+}
+void clearCommandData(string* command){
+    int end = command->find(" ");
+    command->erase(command->begin(), command->begin() + end + 1);\
 }
