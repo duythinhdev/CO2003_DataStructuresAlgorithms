@@ -1,6 +1,8 @@
 #include "main.h"
 
-void reg(int i, string basicString, int i1);
+void reg(string* command);
+string* find_str(string s,string del);
+int size(string* s);
 
 void simulate(string filename, restaurant* r)
 {
@@ -10,14 +12,41 @@ void simulate(string filename, restaurant* r)
     if (myfile.is_open())
     {
         while (getline(myfile, line)) {
-            cout << line.substr(0, 4);
-            string command = line.substr(0, 4);
-            if(command == "REG"){
-//                string name = "asd";
-//                reg(1, name, 1);
+            //get command
+            string* command = find_str(line, " ");
+            if(command[0] == "REG"){
+                reg(command);
             }
-            cout << line << '\n';
         }
         myfile.close();
     }
+}
+void reg(string* command){
+    cout<<size(command);
+    if(size(command) == 4){
+        // co id
+    }
+}
+int size(string* command){
+    int count = 0;
+    for(int i = 0; i < 5;i ++){
+        if(!command[i].empty()){
+            count++;
+        }
+    }
+    return count;
+}
+string* find_str(string s, string del) {
+    int end = s.find(del);
+    string* array = new string[5];
+    int index = 0;
+    while (end != -1) {
+        array[index] = string(s.substr(0, end));
+        index++;
+        s.erase(s.begin(), s.begin() + end + 1);
+        end = s.find(del);
+    }
+
+    array[index] =  string(s.substr(0, end));
+    return array;
 }
