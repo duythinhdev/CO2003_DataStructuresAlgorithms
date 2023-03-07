@@ -45,6 +45,10 @@ void reg(string command, restaurant* r){
             if(r->recentTable->ID == id){
                 r->recentTable->name = name;
                 r->recentTable->age = age;
+            }
+            else if(r->recentTable->ID != id && r->recentTable->ID >= id && r->recentTable->name == ""){
+                r->recentTable->name = name;
+                r->recentTable->age = age;
                 return;
             }
         }
@@ -77,5 +81,5 @@ int countSpace(string command, string del){
 }
 void clearCommandData(string* command){
     int end = command->find(" ");
-    command->erase(command->begin(), command->begin() + end + 1);\
+    command->erase(command->begin(), command->begin() + end + 1);
 }
