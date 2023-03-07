@@ -3,9 +3,10 @@
 #define ACTION_REG "REG"
 #define STR_NULL " "
 
-void reg(string command);
+void reg(string command,restaurant* r);
 int countSpace(string s, string del);
 void clearCommandData(string* line);
+
 void simulate(string filename, restaurant* r)
 {
 
@@ -20,29 +21,47 @@ void simulate(string filename, restaurant* r)
             clearCommandData(&line);
             //line.erase(line.begin(), line.begin() + end + 1);
             if(commandName == ACTION_REG){
-                reg(line);
+                reg(line, r);
             }
 //        }
         myfile.close();
     }
 }
 
-void reg(string command){
+void reg(string command, restaurant* r){
     string name;
-    string id;
-    string age;
+    int id;
+    int age;
     if(countSpace(command," ") == 2) {
         // has id
-        id = command.substr(0, command.find(" "));
+        id = stoi(command.substr(0, command.find(" ")));
         clearCommandData(&command);
         name = command.substr(0, command.find(" "));
         clearCommandData(&command);
-        age = command.substr(0, command.find(" "));
+        age = stoi(command.substr(0, command.find(" ")));
+        table* last = r->recentTable;
+        while(last != r->recentTable->next) {
+            r->recentTable = r->recentTable->next;
+            if(r->recentTable->ID == id){
+                r->recentTable->name = name;
+                r->recentTable->age = age;
+                return;
+            }
+        }
     }else{
         name = command.substr(0, command.find(" "));
         clearCommandData(&command);
-        age = command.substr(0, command.find(" "));
-         // don't has id
+        age = stoi(command.substr(0, command.find(" ")));
+        table* last = r->recentTable;
+        while(last != r->recentTable->next) {
+            r->recentTable = r->recentTable->next;
+            if(r->recentTable->name == ""){
+                r->recentTable->name = name;
+                r->recentTable->age = age;
+                return;
+            }
+        }
+        // don't has id
     }
 }
 int countSpace(string command, string del){
