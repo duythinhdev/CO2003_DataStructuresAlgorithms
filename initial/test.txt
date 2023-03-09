@@ -1,7 +1,7 @@
 REG John 35
-REG 5 Nam 10
+REG 2 Nam 10
 REG Wick 35
-REG 5 Tuan 20
+REG 2 Tuan 20
 REG 3 Eddie 45
 REG 7 Duck 34
 REG 5 Epsilon 47

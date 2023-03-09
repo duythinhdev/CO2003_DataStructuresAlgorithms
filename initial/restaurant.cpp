@@ -14,7 +14,7 @@ void simulate(string filename, restaurant* r)
     ifstream myfile(filename);
     if (myfile.is_open())
     {
-//        while (getline(myfile, line)) {
+        while (getline(myfile, line)) {
             getline(myfile, line);
             int end = line.find(STR_NULL);
             string commandName = string(line.substr(0, end));
@@ -23,7 +23,7 @@ void simulate(string filename, restaurant* r)
             if(commandName == ACTION_REG){
                 reg(line, r);
             }
-//        }
+        }
         myfile.close();
     }
 }
@@ -42,17 +42,17 @@ void reg(string command, restaurant* r){
         table* last = r->recentTable;
         while(last != r->recentTable->next) {
             r->recentTable = r->recentTable->next;
-            if(r->recentTable->name == "" && r->recentTable->ID == id){
+//            if(r->recentTable->ID == id){
+//                r->recentTable->name = name;
+//                r->recentTable->age = age;
+//                return;
+//            }
+             if(r->recentTable->name == "" && r->recentTable->ID == id){
                 r->recentTable->name = name;
                 r->recentTable->age = age;
-                return;
             }
-            else if(r->recentTable->ID == id){
-                r->recentTable->name = name;
-                r->recentTable->age = age;
-                return;
-            }
-            while(r->recentTable->ID != id){
+            while(r->recentTable->ID != id && r->recentTable->name != ""){
+                r->recentTable = r->recentTable->next;
                 r->recentTable->name = name;
                 r->recentTable->age = age;
             }
