@@ -1,5 +1,5 @@
-REG 2 Nam 10
 REG John 35
+REG 2 Nam 10
 REG Wick 35
 REG 2 Tuan 20
 REG 3 Eddie 45
