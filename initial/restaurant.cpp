@@ -1,9 +1,11 @@
 #include "main.h"
 
 #define ACTION_REG "REG"
+#define ACTION_REGM "REGM"
 #define STR_NULL " "
 
 void reg(string command,restaurant* r);
+void regm(string command,restaurant* r);
 int countSpace(string s, string del);
 void clearCommandData(string* line);
 
@@ -15,13 +17,15 @@ void simulate(string filename, restaurant* r)
     if (myfile.is_open())
     {
         while (getline(myfile, line)) {
-            getline(myfile, line);
             int end = line.find(STR_NULL);
             string commandName = string(line.substr(0, end));
             clearCommandData(&line);
             //line.erase(line.begin(), line.begin() + end + 1);
             if(commandName == ACTION_REG){
                 reg(line, r);
+            }
+            if(commandName == ACTION_REGM){
+                regm(line, r);
             }
         }
         myfile.close();
@@ -32,6 +36,7 @@ void reg(string command, restaurant* r){
     string name;
     int id;
     int age;
+    table* currentTable;
     if(countSpace(command," ") == 2) {
         // has id
         id = stoi(command.substr(0, command.find(" ")));
@@ -42,19 +47,22 @@ void reg(string command, restaurant* r){
         table* last = r->recentTable;
         while(last != r->recentTable->next) {
             r->recentTable = r->recentTable->next;
-//            if(r->recentTable->ID == id){
-//                r->recentTable->name = name;
-//                r->recentTable->age = age;
-//                return;
-//            }
-             if(r->recentTable->name == "" && r->recentTable->ID == id){
+            if(r->recentTable->name == "" && r->recentTable->ID == id){
                 r->recentTable->name = name;
                 r->recentTable->age = age;
+                return;
             }
-            while(r->recentTable->ID != id && r->recentTable->name != ""){
-                r->recentTable = r->recentTable->next;
+            if(r->recentTable->ID == id){
+                currentTable = r->recentTable;
+                break;
+            }
+        }
+        while(currentTable != r->recentTable->next){
+            r->recentTable = r->recentTable->next;
+            if(r->recentTable->name == ""){
                 r->recentTable->name = name;
                 r->recentTable->age = age;
+                return;
             }
         }
     }else{
@@ -72,6 +80,17 @@ void reg(string command, restaurant* r){
         }
         // don't has id
     }
+}
+void regm(string command, restaurant* r){
+    string name;
+    int age;
+    int num;
+    name = command.substr(0, command.find(" "));
+    clearCommandData(&command);
+    age = stoi(command.substr(0, command.find(" ")));
+    clearCommandData(&command);
+    num = stoi(command.substr(0, command.find(" ")));
+
 }
 int countSpace(string command, string del){
     int end = command.find(del);
