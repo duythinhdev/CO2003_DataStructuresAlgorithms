@@ -2,6 +2,7 @@
 
 #define ACTION_REG "REG"
 #define ACTION_REGM "REGM"
+#define ACTION_CLE "CLE"
 #define STR_NULL " "
 
 void reg(string command,restaurant* r);
@@ -90,6 +91,15 @@ void regm(string command, restaurant* r){
     age = stoi(command.substr(0, command.find(" ")));
     clearCommandData(&command);
     num = stoi(command.substr(0, command.find(" ")));
+    int count = 0;
+    table* last = r->recentTable;
+    table* prev = nullptr;
+    while(last != r->recentTable->next){
+        count++;
+        if(r->recentTable->name == "" && count == num){
+
+        }
+    }
 
 }
 int countSpace(string command, string del){
@@ -107,3 +117,78 @@ void clearCommandData(string* command){
     int end = command->find(" ");
     command->erase(command->begin(), command->begin() + end + 1);
 }
+
+// Node class for linked list
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int data) {
+        this->data = data;
+        next = nullptr;
+    }
+};
+
+// Queue class implemented using linked list
+class Queue {
+private:
+    Node* front;
+    Node* rear;
+public:
+    Queue() {
+        front = rear = nullptr;
+    }
+
+    // Check if queue is empty
+    bool isEmpty() {
+        return front == nullptr;
+    }
+
+    // Add an element to the back of the queue
+    void enqueue(int data) {
+        Node* newNode = new Node(data);
+        if (rear == nullptr) {
+            front = rear = newNode;
+            return;
+        }
+        rear->next = newNode;
+        rear = newNode;
+    }
+
+    // Remove an element from the front of the queue
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "Queue is empty!" << endl;
+            return;
+        }
+        Node* temp = front;
+        front = front->next;
+        if (front == nullptr) {
+            rear = nullptr;
+        }
+        delete temp;
+    }
+
+    // Get the front element of the queue
+    int peek() {
+        if (isEmpty()) {
+            cout << "Queue is empty!" << endl;
+            return -1;
+        }
+        return front->data;
+    }
+
+    // Print the queue
+    void print() {
+        if (isEmpty()) {
+            cout << "Queue is empty!" << endl;
+            return;
+        }
+        Node* temp = front;
+        while (temp != nullptr) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
