@@ -83,7 +83,7 @@ void reg(string command, restaurant *r, Queue *pQueue);
 
 table *regm(string command, restaurant *r);
 
-void cle(string command, restaurant *r);
+void cle(string command, restaurant *r, table *t);
 
 int countSpace(string s, string del);
 
@@ -92,6 +92,7 @@ void clearCommandData(string *line);
 void simulate(string filename, restaurant *r) {
     Queue queue;
     string line;
+    table *singleTable;
     ifstream myfile(filename);
     if (myfile.is_open()) {
         while (getline(myfile, line)) {
@@ -103,10 +104,10 @@ void simulate(string filename, restaurant *r) {
                 reg(line, r, &queue);
             }
             if (commandName == ACTION_REGM) {
-                regm(line, r);
+                singleTable = regm(line, r);
             }
             if (commandName == ACTION_CLE) {
-                cle(line, r);
+                cle(line, r, singleTable);
             }
 
         }
@@ -184,8 +185,10 @@ table *regm(string command, restaurant *r) {
     int countLoop = 0;
     table *last = r->recentTable;
     table *last2 = r->recentTable;
-    table *prev = nullptr;
-    table *temp = nullptr;
+    table *mergeHeadTable = nullptr;
+    table *mergeLastTable = nullptr;
+    table *singleHeadTable = nullptr;
+    table *singleLastTable = nullptr;
     if (last->name == "") {
         // moi vo ban trong dau thi dem luon
         count = 1;
@@ -202,41 +205,78 @@ table *regm(string command, restaurant *r) {
         if(countPrev >= num){
             // tim thang so 4
             last2 = last2->next;
-            prev = last2;
+            mergeHeadTable = last2;
         }
         // count ban trong
-        r->recentTable->name != "" ? count = 0 :  count++;
+        if(r->recentTable->name != ""){
+            count = 0;
+        }else {
+            count++;
+        }
         if (count == num) {
             // tim toi 7
-            temp  = r->recentTable;
+            mergeLastTable  = r->recentTable;
             break;
         }
     }
-    if(count == num){
-        while(prev != r->recentTable->next) {
+    if(count == num) {
+        while(mergeHeadTable != r->recentTable->next) {
             r->recentTable = r->recentTable->next;
         }
-
+        singleLastTable = r->recentTable;
         // 7 qua 4
-        table *head = temp->next;
-        temp->next = prev;
+        singleHeadTable = mergeLastTable->next;
+        mergeLastTable->next = mergeHeadTable;
         // 3 qua 1
-        r->recentTable->next = head;
+        singleLastTable->next = singleHeadTable;
+        while(mergeLastTable != mergeHeadTable){
+            mergeHeadTable = mergeHeadTable->next;
+            mergeHeadTable->name = name;
+            mergeHeadTable->age = age;
+        }
         // tra ve ban chua gop
-        return r->recentTable;
+        r->recentTable = mergeLastTable;
+        return singleLastTable;
     }
     return nullptr;
 }
 
-void cle(string command, restaurant *r) {
+void cle(string command, restaurant *r,table *singleTable) {
     int id;
     id = stoi(command.substr(0, command.find(" ")));
+    table* temp = singleTable->next;
+    while(singleTable != temp){
+        temp = temp->next;
+        if (temp->ID == id) {
+            temp->name = "";
+            temp->age = 0;
+            return;
+        }
+    }
+
     table *last = r->recentTable;
+    bool isExist = false;
     while (last != r->recentTable->next) {
-        if (r->recentTable->ID == id) {
+        r->recentTable = r->recentTable->next;
+        if(r->recentTable->ID == id){
+            isExist = true;
+            break;
+        }
+    }
+    if(isExist){
+        while(last != r->recentTable->next){
+            r->recentTable = r->recentTable->next;
             r->recentTable->name = "";
             r->recentTable->age = 0;
         }
+        // merge
+        table *mergeHeadTable = last->next;
+        table *mergeLastTable = r->recentTable;
+        table *singleHeadTable = singleTable->next;
+        table *singleLastTable = singleTable;
+        singleLastTable->next = mergeHeadTable;
+        mergeLastTable->next = singleHeadTable;
+        r->recentTable = mergeLastTable;
     }
 }
 
