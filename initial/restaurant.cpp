@@ -81,7 +81,7 @@ public:
 };
 void reg(string command, restaurant *r, Queue* pQueue);
 
-void regm(string command, restaurant *r);
+table* regm(string command, restaurant *r);
 
 void cle(string command, restaurant *r);
 
@@ -106,7 +106,7 @@ void simulate(string filename, restaurant *r) {
                 regm(line, r);
             }
             if(commandName == ACTION_CLE){
-                cle(line);
+                cle(line,r);
             }
 
         }
@@ -169,8 +169,7 @@ void reg(string command, restaurant *r, Queue* q) {
         // don't has id
     }
 }
-
-void regm(string command, restaurant *r) {
+table* regm(string command, restaurant *r) {
     string name;
     int age;
     int num;
@@ -182,12 +181,18 @@ void regm(string command, restaurant *r) {
     int count = 0;
     table *last = r->recentTable;
     table *prev = nullptr;
-    while (last != r->recentTable->next) {  
+    while (last != r->recentTable->next) {
+        r->recentTable = r->recentTable->next;
         count++;
         if (r->recentTable->name == "" && count == num) {
-            prev->next = prev->next;
+            prev = last;
+            prev->next = last->next;
+        }else {
+            break;
         }
     }
+    last->next = prev;
+    return prev;
 
 }
 void cle(string command,restaurant* r){
