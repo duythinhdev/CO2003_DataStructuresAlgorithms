@@ -4,7 +4,7 @@
 #define ACTION_REGM "REGM"
 #define ACTION_CLE "CLE"
 #define STR_NULL " "
-// Node class for linked list
+
 class Node {
 public:
     string data;
@@ -16,7 +16,6 @@ public:
     }
 };
 
-// Queue class implemented using linked list
 class Queue {
 private:
     Node *front;
@@ -33,7 +32,7 @@ public:
 
     // Add an element to the back of the queue
     void enqueue(string data) {
-        Node* newNode = new Node(data);
+        Node *newNode = new Node(data);
         if (rear == nullptr) {
             front = rear = newNode;
             return;
@@ -79,9 +78,10 @@ public:
         cout << endl;
     }
 };
-void reg(string command, restaurant *r, Queue* pQueue);
 
-table* regm(string command, restaurant *r);
+void reg(string command, restaurant *r, Queue *pQueue);
+
+table *regm(string command, restaurant *r);
 
 void cle(string command, restaurant *r);
 
@@ -105,8 +105,8 @@ void simulate(string filename, restaurant *r) {
             if (commandName == ACTION_REGM) {
                 regm(line, r);
             }
-            if(commandName == ACTION_CLE){
-                cle(line,r);
+            if (commandName == ACTION_CLE) {
+                cle(line, r);
             }
 
         }
@@ -114,7 +114,7 @@ void simulate(string filename, restaurant *r) {
     }
 }
 
-void reg(string command, restaurant *r, Queue* q) {
+void reg(string command, restaurant *r, Queue *q) {
     string name;
     int id;
     int age;
@@ -149,7 +149,7 @@ void reg(string command, restaurant *r, Queue* q) {
                 return;
             }
             count++;
-            if(count == MAXSIZE){
+            if (count == MAXSIZE) {
                 q->enqueue(cloneCommand);
             }
         }
@@ -169,7 +169,8 @@ void reg(string command, restaurant *r, Queue* q) {
         // don't has id
     }
 }
-table* regm(string command, restaurant *r) {
+
+table *regm(string command, restaurant *r) {
     string name;
     int age;
     int num;
@@ -179,28 +180,60 @@ table* regm(string command, restaurant *r) {
     clearCommandData(&command);
     num = stoi(command.substr(0, command.find(" ")));
     int count = 0;
+    int countPrev = 0;
+    int countLoop = 0;
     table *last = r->recentTable;
+    table *last2 = r->recentTable;
     table *prev = nullptr;
-    while (last != r->recentTable->next) {
+    table *temp = nullptr;
+    if (last->name == "") {
+        // moi vo ban trong dau thi dem luon
+        count = 1;
+        // moi vo ban trong dau thi dem prev
+        countPrev = 1;
+    }
+    while (last != r->recentTable->next && countLoop < 2) {
         r->recentTable = r->recentTable->next;
-        count++;
-        if (r->recentTable->name == "" && count == num) {
-            prev = last;
-            prev->next = last->next;
-        }else {
+        if(r->recentTable == last){
+            // qua qua lan 2 den thang 3
+            countLoop++;
+        }
+        countPrev++;
+        if(countPrev >= num){
+            // tim thang so 4
+            last2 = last2->next;
+            prev = last2;
+        }
+        // count ban trong
+        r->recentTable->name != "" ? count = 0 :  count++;
+        if (count == num) {
+            // tim toi 7
+            temp  = r->recentTable;
             break;
         }
     }
-    last->next = prev;
-    return prev;
+    if(count == num){
+        while(prev != r->recentTable->next) {
+            r->recentTable = r->recentTable->next;
+        }
 
+        // 7 qua 4
+        table *head = temp->next;
+        temp->next = prev;
+        // 3 qua 1
+        r->recentTable->next = head;
+        // tra ve ban chua gop
+        return r->recentTable;
+    }
+    return nullptr;
 }
-void cle(string command,restaurant* r){
+
+void cle(string command, restaurant *r) {
     int id;
     id = stoi(command.substr(0, command.find(" ")));
     table *last = r->recentTable;
-    while(last != r->recentTable->next){
-        if(r->recentTable->ID == id){
+    while (last != r->recentTable->next) {
+        if (r->recentTable->ID == id) {
             r->recentTable->name = "";
             r->recentTable->age = 0;
         }
