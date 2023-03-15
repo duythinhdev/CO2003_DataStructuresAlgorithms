@@ -3,6 +3,7 @@
 #define ACTION_REG "REG"
 #define ACTION_REGM "REGM"
 #define ACTION_CLE "CLE"
+#define ACTION_PS "PS"
 #define STR_NULL " "
 
 class Node {
@@ -83,16 +84,19 @@ void reg(string command, restaurant *r, Queue *pQueue);
 
 table *regm(string command, restaurant *r);
 
-void cle(string command, restaurant *r, table *t);
+void cle(string command, restaurant *r, table *t, table *singleLastTable);
 
 int countSpace(string s, string del);
 
 void clearCommandData(string *line);
 
+void ps(string command, restaurant *r);
+
 void simulate(string filename, restaurant *r) {
     Queue queue;
     string line;
-    table *singleTable;
+    table *mergeTable;
+    table *singleLastTable;
     ifstream myfile(filename);
     if (myfile.is_open()) {
         while (getline(myfile, line)) {
@@ -104,10 +108,14 @@ void simulate(string filename, restaurant *r) {
                 reg(line, r, &queue);
             }
             if (commandName == ACTION_REGM) {
-                singleTable = regm(line, r);
+                mergeTable = regm(line, r);
+                singleLastTable = r->recentTable;
             }
             if (commandName == ACTION_CLE) {
-                cle(line, r, singleTable);
+                cle(line, r, mergeTable, singleLastTable);
+            }
+            if(commandName == ACTION_PS){
+                ps(line, r);
             }
 
         }
@@ -155,17 +163,22 @@ void reg(string command, restaurant *r, Queue *q) {
             }
         }
     } else {
+        int count = 0;
         name = command.substr(0, command.find(" "));
         clearCommandData(&command);
         age = stoi(command.substr(0, command.find(" ")));
         table *last = r->recentTable;
         while (last != r->recentTable->next) {
+            count++;
             r->recentTable = r->recentTable->next;
             if (r->recentTable->name == "") {
                 r->recentTable->name = name;
                 r->recentTable->age = age;
                 return;
             }
+        }
+        if (count == MAXSIZE) {
+            q->enqueue(cloneCommand);
         }
         // don't has id
     }
@@ -230,22 +243,24 @@ table *regm(string command, restaurant *r) {
         // 3 qua 1
         singleLastTable->next = singleHeadTable;
         while(mergeLastTable != mergeHeadTable){
-            mergeHeadTable = mergeHeadTable->next;
             mergeHeadTable->name = name;
             mergeHeadTable->age = age;
+            mergeHeadTable = mergeHeadTable->next;
         }
+        mergeLastTable->name = name;
+        mergeLastTable->age = age;
         // tra ve ban chua gop
-        r->recentTable = mergeLastTable;
-        return singleLastTable;
+        r->recentTable = singleLastTable;
+        return mergeLastTable;
     }
     return nullptr;
 }
 
-void cle(string command, restaurant *r,table *singleTable) {
+void cle(string command, restaurant *r,table *mergeTable, table *singleLastTable) {
     int id;
     id = stoi(command.substr(0, command.find(" ")));
-    table* temp = singleTable->next;
-    while(singleTable != temp){
+    table* temp = r->recentTable->next;
+    while(r->recentTable != temp){
         temp = temp->next;
         if (temp->ID == id) {
             temp->name = "";
@@ -254,30 +269,41 @@ void cle(string command, restaurant *r,table *singleTable) {
         }
     }
 
-    table *last = r->recentTable;
+    table *last = mergeTable;
     bool isExist = false;
-    while (last != r->recentTable->next) {
-        r->recentTable = r->recentTable->next;
-        if(r->recentTable->ID == id){
+    while (last != mergeTable->next) {
+        mergeTable = mergeTable->next;
+        if(mergeTable->ID == id){
             isExist = true;
             break;
         }
     }
+    mergeTable = mergeTable->next;
     if(isExist){
-        while(last != r->recentTable->next){
-            r->recentTable = r->recentTable->next;
-            r->recentTable->name = "";
-            r->recentTable->age = 0;
+        while(last != mergeTable->next){
+            mergeTable->name = "";
+            mergeTable->age = 0;
+            mergeTable = mergeTable->next;
         }
+        mergeTable->name = "";
+        mergeTable->age = 0;
         // merge
         table *mergeHeadTable = last->next;
-        table *mergeLastTable = r->recentTable;
-        table *singleHeadTable = singleTable->next;
-        table *singleLastTable = singleTable;
+        table *mergeLastTable = last;
+        table *singleHeadTable = singleLastTable->next;
         singleLastTable->next = mergeHeadTable;
         mergeLastTable->next = singleHeadTable;
         r->recentTable = mergeLastTable;
     }
+}
+void ps(string command, restaurant *r){
+    int id;
+    id = stoi(command.substr(0, command.find(" ")));
+    table* last = r->recentTable;
+    restaurant* currentRestaurant = new restaurant();
+    while(last != r->recentTable->next){
+    }
+
 }
 
 int countSpace(string command, string del) {
