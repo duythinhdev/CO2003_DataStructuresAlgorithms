@@ -114,7 +114,7 @@ void simulate(string filename, restaurant *r) {
             if (commandName == ACTION_CLE) {
                 cle(line, r, mergeTable, singleLastTable);
             }
-            if(commandName == ACTION_PS){
+            if (commandName == ACTION_PS) {
                 ps(line, r);
             }
 
@@ -210,30 +210,30 @@ table *regm(string command, restaurant *r) {
     }
     while (last != r->recentTable->next && countLoop < 2) {
         r->recentTable = r->recentTable->next;
-        if(r->recentTable == last){
+        if (r->recentTable == last) {
             // qua qua lan 2 den thang 3
             countLoop++;
         }
         countPrev++;
-        if(countPrev >= num){
+        if (countPrev >= num) {
             // tim thang so 4
             last2 = last2->next;
             mergeHeadTable = last2;
         }
         // count ban trong
-        if(r->recentTable->name != ""){
+        if (r->recentTable->name != "") {
             count = 0;
-        }else {
+        } else {
             count++;
         }
         if (count == num) {
             // tim toi 7
-            mergeLastTable  = r->recentTable;
+            mergeLastTable = r->recentTable;
             break;
         }
     }
-    if(count == num) {
-        while(mergeHeadTable != r->recentTable->next) {
+    if (count == num) {
+        while (mergeHeadTable != r->recentTable->next) {
             r->recentTable = r->recentTable->next;
         }
         singleLastTable = r->recentTable;
@@ -242,7 +242,7 @@ table *regm(string command, restaurant *r) {
         mergeLastTable->next = mergeHeadTable;
         // 3 qua 1
         singleLastTable->next = singleHeadTable;
-        while(mergeLastTable != mergeHeadTable){
+        while (mergeLastTable != mergeHeadTable) {
             mergeHeadTable->name = name;
             mergeHeadTable->age = age;
             mergeHeadTable = mergeHeadTable->next;
@@ -256,11 +256,11 @@ table *regm(string command, restaurant *r) {
     return nullptr;
 }
 
-void cle(string command, restaurant *r,table *mergeTable, table *singleLastTable) {
+void cle(string command, restaurant *r, table *mergeTable, table *singleLastTable) {
     int id;
     id = stoi(command.substr(0, command.find(" ")));
-    table* temp = r->recentTable->next;
-    while(r->recentTable != temp){
+    table *temp = r->recentTable->next;
+    while (r->recentTable != temp) {
         temp = temp->next;
         if (temp->ID == id) {
             temp->name = "";
@@ -273,14 +273,14 @@ void cle(string command, restaurant *r,table *mergeTable, table *singleLastTable
     bool isExist = false;
     while (last != mergeTable->next) {
         mergeTable = mergeTable->next;
-        if(mergeTable->ID == id){
+        if (mergeTable->ID == id) {
             isExist = true;
             break;
         }
     }
     mergeTable = mergeTable->next;
-    if(isExist){
-        while(last != mergeTable->next){
+    if (isExist) {
+        while (last != mergeTable->next) {
             mergeTable->name = "";
             mergeTable->age = 0;
             mergeTable = mergeTable->next;
@@ -296,12 +296,25 @@ void cle(string command, restaurant *r,table *mergeTable, table *singleLastTable
         r->recentTable = mergeLastTable;
     }
 }
-void ps(string command, restaurant *r){
+
+void ps(string command, restaurant *r) {
     int id;
     id = stoi(command.substr(0, command.find(" ")));
-    table* last = r->recentTable;
-    restaurant* currentRestaurant = new restaurant();
-    while(last != r->recentTable->next){
+    table *last = r->recentTable;
+    table *head = new table(
+            r->recentTable->ID,
+            r->recentTable->name,
+            r->recentTable->age,
+            nullptr);
+    while (last != r->recentTable->next) {
+        r->recentTable = r->recentTable->next;
+        table *newTable = new table(
+                r->recentTable->ID,
+                r->recentTable->name,
+                r->recentTable->age,
+                nullptr);
+        newTable->next = head;
+        head = newTable;
     }
 
 }
