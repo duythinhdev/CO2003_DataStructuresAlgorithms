@@ -298,25 +298,50 @@ void cle(string command, restaurant *r, table *mergeTable, table *singleLastTabl
 }
 
 void ps(string command, restaurant *r) {
-    int id;
-    id = stoi(command.substr(0, command.find(" ")));
-    table *last = r->recentTable;
-    table *head = new table(
-            r->recentTable->ID,
-            r->recentTable->name,
-            r->recentTable->age,
-            nullptr);
-    while (last != r->recentTable->next) {
+    int num;
+    num = stoi(command.substr(0, command.find(" ")));
+    if(num > 2 * MAXSIZE){
+        return;
+    }
+    table *recentTable = r->recentTable;
+    int min = MAXSIZE;
+    table *head;
+    int countOrder = 0;
+    while (recentTable != r->recentTable->next) {
         r->recentTable = r->recentTable->next;
-        table *newTable = new table(
-                r->recentTable->ID,
-                r->recentTable->name,
-                r->recentTable->age,
-                nullptr);
-        newTable->next = head;
-        head = newTable;
+        if( r->recentTable->name != ""){
+            countOrder++;
+        }
+        if(min > r->recentTable->ID){
+            min =  r->recentTable->ID;
+            head = r->recentTable;
+        }
+    }
+    if(countOrder == 0) {
+        cout << "EMPTY" << "\n";
+        return;
     }
 
+    table *reverseHead = new table(head->ID, head->name, head->age,nullptr);
+    table *nextHead = head->next;
+    while (head != nextHead) {
+        table *newTable = new table(nextHead->ID,nextHead->name,nextHead->age,nullptr);
+        newTable->next = reverseHead;
+        reverseHead = newTable;
+        nextHead = nextHead->next;
+    }
+    while(reverseHead != nullptr){
+        if(num == 0){
+            return;
+        }
+        if(reverseHead->name != ""){
+            cout<< reverseHead->name << "\n";
+            num--;
+        }
+        reverseHead = reverseHead->next;
+    }
+
+    //reverseHead: 15- > 14 -> 13
 }
 
 int countSpace(string command, string del) {
