@@ -4,6 +4,8 @@
 #define ACTION_REGM "REGM"
 #define ACTION_CLE "CLE"
 #define ACTION_PS "PS"
+#define ACTION_PQ "PQ"
+#define ACTION_SQ "SQ"
 #define STR_NULL " "
 
 class Node {
@@ -18,10 +20,10 @@ public:
 };
 
 class Queue {
-private:
+//private:
+public:
     Node *front;
     Node *rear;
-public:
     Queue() {
         front = rear = nullptr;
     }
@@ -92,6 +94,10 @@ void clearCommandData(string *line);
 
 void ps(string command, restaurant *r);
 
+void pq(string command, restaurant *r, Queue *pQueue);
+
+void sq(string command, restaurant *r, Queue *pQueue);
+
 void simulate(string filename, restaurant *r) {
     Queue queue;
     string line;
@@ -117,7 +123,12 @@ void simulate(string filename, restaurant *r) {
             if (commandName == ACTION_PS) {
                 ps(line, r);
             }
-
+            if (commandName == ACTION_PQ) {
+                pq(line, r, &queue);
+            }
+            if (commandName == ACTION_SQ) {
+                sq(line, r, &queue);
+            }
         }
         myfile.close();
     }
@@ -318,7 +329,7 @@ void ps(string command, restaurant *r) {
         }
     }
     if(countOrder == 0) {
-        cout << "EMPTY" << "\n";
+        cout << "Empty" << "\n";
         return;
     }
 
@@ -344,6 +355,46 @@ void ps(string command, restaurant *r) {
     //reverseHead: 15- > 14 -> 13
 }
 
+void pq(string command, restaurant *r, Queue *q){
+    if(q->isEmpty()){
+        cout << "Empty" << "\n";
+        return;
+    }
+    int num;
+    num = stoi(command.substr(0, command.find(" ")));
+    string name;
+    Node* temp = q->front;
+    int count = 0;
+    while(temp != nullptr){
+        temp = temp->next;
+        if(countSpace(temp->data, " ") == 2){
+            stoi(temp->data.substr(0, command.find(" ")));
+            clearCommandData(&command);
+            name = temp->data.substr(0, command.find(" "));
+            if(name != ""){
+                count++;
+                cout << name << "\n";
+            }
+        }
+        else {
+            name = temp->data.substr(0, command.find(" "));
+            if(name != ""){
+                count++;
+                cout << name << "\n";
+            }
+        }
+        if(count == num){
+            return;
+        }
+    }
+
+}
+void sq(string command, restaurant *r, Queue *q){
+    if(q->isEmpty()){
+        cout << "Empty" << "\n";
+        return;
+    }
+}
 int countSpace(string command, string del) {
     int end = command.find(del);
     int count = 0;
