@@ -148,6 +148,9 @@ void reg(string command, restaurant *r, Queue *q) {
         clearCommandData(&command);
         age = stoi(command.substr(0, command.find(" ")));
         table *last = r->recentTable;
+        if(age < 16){
+            return;
+        }
         while (last != r->recentTable->next) {
             r->recentTable = r->recentTable->next;
             if (r->recentTable->name == "" && r->recentTable->ID == id) {
@@ -178,6 +181,9 @@ void reg(string command, restaurant *r, Queue *q) {
         name = command.substr(0, command.find(" "));
         clearCommandData(&command);
         age = stoi(command.substr(0, command.find(" ")));
+        if(age < 16){
+            return;
+        }
         table *last = r->recentTable;
         while (last != r->recentTable->next) {
             count++;
@@ -204,6 +210,9 @@ table *regm(string command, restaurant *r) {
     age = stoi(command.substr(0, command.find(" ")));
     clearCommandData(&command);
     num = stoi(command.substr(0, command.find(" ")));
+    if(age < 16){
+        return nullptr;
+    }
     int count = 0;
     int countPrev = 0;
     int countLoop = 0;
