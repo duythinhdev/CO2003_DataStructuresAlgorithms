@@ -20,8 +20,20 @@ int findMax(int* arr,int length){
         }
     }
 }
+int sum(int n){
+    if(n == 1){
+        return 1;
+    } else {
+        return n + sum(n - 1);
+    }
+}
+int sumArray(int* arr, int length){
+
+}
 int main() {
      int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
-     cout << findMax(arr, 10);
+     // cout << findMax(arr, 10);
+     cout << sumArray(arr,10);
+     // cout << sum(25);
      return 0;
 }
