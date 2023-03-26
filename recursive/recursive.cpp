@@ -37,61 +37,89 @@ int sumArray(int* arr, int length){
         return (sumArray(arr, length - 1) + sum);
     }
 }
-void merge(int a[],int l, int m, int r){
-    vector<int> x(a+l,a+m+1);
-    vector<int> y(a+m+1, a+r+1);
-    int i = 0;
-    int j = 0;
-    while( i < x.size() && j < y.size()){
-        if(x[i] <= y[j]){
-            a[l] = x[i];
-            ++l;
-            ++i;
+
+void merge(int arr[], int l, int m, int r) {
+    int i = l;
+    int j = m + 1;
+    int k = l;
+
+    /* create temp array */
+    int temp[5];
+
+    while (i <= m && j <= r) {
+        if (arr[i] <= arr[j]) {
+            temp[k] = arr[i];
+            i++;
+            k++;
+        } else {
+            temp[k] = arr[j];
+            j++;
+            k++;
         }
-        else {
-            a[l] = y[j];
-            ++l;
-            ++i;
-        }
+
     }
-    while(i < x.size()){
-        a[l] = x[i];
-        ++l;
-        ++i;
+
+    /* Copy the remaining elements of first half, if there are any */
+    while (i <= m) {
+        temp[k] = arr[i];
+        i++;
+        k++;
+
     }
-    while(j < y.size()){
-        a[l] = y[j];
-        ++l;
-        ++j;
+
+    /* Copy the remaining elements of second half, if there are any */
+    while (j <= r) {
+        temp[k] = arr[j];
+        j++;
+        k++;
+    }
+
+    /* Copy the temp array to original array */
+    for (int p = l; p <= r; p++) {
+        arr[p] = temp[p];
     }
 }
-void mergeSort(int a[],int l,int r){
-    if(l >= r)return; // Nếu mảng còn ít nhất 1 phần
-    int m = (l + r) / 2;  //  biến để lưu vị trí chia đôi mảng
-    mergeSort(a,l,m); // Đệ quy mảng trái
-    mergeSort(a,m + 1,r); // Đệ quy mảng phải
-    merge(a, l ,m , r);  // Trộn hai mảng lại
-}
-void printArray(int A[], int size)
-{
-    for (int i = 0; i < size; i++)
-        cout << A[i] << " ";
+
+/* l is for left index and r is right index of the
+   sub-array of arr to be sorted */
+void mergeSort(int arr[], int l, int r) {
+    if (l < r) {
+        // find midpoint
+        int m = (l + r) / 2;
+
+        // recurcive mergesort first and second halves
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+
+        // merge
+        merge(arr, l, m, r);
+    }
 }
 
 int main() {
-     // int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
-     // cout << findMax(arr, 10);
-     // cout << sumArray(arr,10);
-     // cout << sum(25);
-    int arr[] = { 12, 11, 13, 5, 6, 7 , 9 , 10};
-    auto arr_size = sizeof(arr) / sizeof(arr[0]);
+    // int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
+    // cout << findMax(arr, 10);
+    // cout << sumArray(arr,10);
+    // cout << sum(25);
+    int myarray[10] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
+    int arr_size = sizeof(myarray)/sizeof(myarray[0]);
+    //int arr_size = 5;
 
-    cout << "Given array is \n";
-    printArray(arr, arr_size);
+//    cout << "Enter 5 integers in any order: " << endl;
+//    for (int i = 0; i < arr_size; i++) {
+//        cin >> myarray[i];
+//    }
+    cout << "Before Sorting" << endl;
+    for (int i = 0; i < arr_size; i++) {
+        cout << myarray[i] << " ";
+    }
+    cout << endl;
+    mergeSort(myarray, 0, (arr_size - 1)); // mergesort(arr,left,right) called
 
-    mergeSort(arr, 0, arr_size - 1);
+    cout << "After Sorting" << endl;
+    for (int i = 0; i < arr_size; i++) {
+        cout << myarray[i] << " ";
+    }
 
-    cout << "\nSorted array is \n";
-    printArray(arr, arr_size);
     return 0;
 }
