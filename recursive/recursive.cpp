@@ -96,30 +96,73 @@ void mergeSort(int arr[], int l, int r) {
     }
 }
 
+void quickSort(int a[], int l, int r){
+    int p = a[(l+r)/2];
+    int i = l, j = r;
+    while (i < j){
+        while (a[i] < p){
+            i++;
+        }
+        while (a[j] > p){
+            j--;
+        }
+        if (i <= j){
+            int temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+            i++;
+            j--;
+        }
+    }
+    if (i < r){
+        quickSort(a, i, r);
+    }
+    if (l < j){
+        quickSort(a, l, j);
+    }
+}
+
 int main() {
     // int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
     // cout << findMax(arr, 10);
     // cout << sumArray(arr,10);
     // cout << sum(25);
-    int myarray[10] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
-    int arr_size = sizeof(myarray)/sizeof(myarray[0]);
+//    int myarray[10] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
+//    int arr_size = sizeof(myarray)/sizeof(myarray[0]);
     //int arr_size = 5;
 
 //    cout << "Enter 5 integers in any order: " << endl;
 //    for (int i = 0; i < arr_size; i++) {
 //        cin >> myarray[i];
 //    }
-    cout << "Before Sorting" << endl;
-    for (int i = 0; i < arr_size; i++) {
-        cout << myarray[i] << " ";
-    }
-    cout << endl;
-    mergeSort(myarray, 0, (arr_size - 1)); // mergesort(arr,left,right) called
+//    cout << "Before Sorting" << endl;
+//    for (int i = 0; i < arr_size; i++) {
+//        cout << myarray[i] << " ";
+//    }
+//    cout << endl;
+//    mergeSort(myarray, 0, (arr_size - 1)); // mergesort(arr,left,right) called
+//
+//    cout << "After Sorting" << endl;
+//    for (int i = 0; i < arr_size; i++) {
+//        cout << myarray[i] << " ";
+//    }
 
-    cout << "After Sorting" << endl;
-    for (int i = 0; i < arr_size; i++) {
-        cout << myarray[i] << " ";
-    }
 
+    int arr[9] = {5, 12, 7, 1, 13, 2 ,23, 11, 18};
+
+    cout << "Unsorted array : ";
+    for (int i = 0; i < 9; i++)
+    {
+        cout << arr[i] << " ";
+    }
+    printf("\n");
+
+    quickSort(arr, 0, 9 - 1);
+
+    cout << "Sorted array : ";
+    for (int i = 0; i < 9; i++)
+    {
+        cout << arr[i] << " ";
+    }
     return 0;
 }
