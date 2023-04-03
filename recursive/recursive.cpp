@@ -121,6 +121,32 @@ void quickSort(int a[], int l, int r){
         quickSort(a, l, j);
     }
 }
+void quickSort1(int a[],int l,int r){
+    int p = a[(l+r)/2];
+    int i  = l;
+    int j = r;
+    while( i < j){
+        while(a[i] < p){
+            i++;
+        }
+        while(a[j] > p){
+            j--;
+        }
+        if( i <= j){
+            int temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+            i++;
+            j--;
+        }
+    }
+    if(i < r){
+        quickSort(a, i, r);
+    }
+    if (l < j){
+        quickSort(a, l, j);
+    }
+}
 
 int main() {
     // int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
@@ -157,7 +183,7 @@ int main() {
     }
     printf("\n");
 
-    quickSort(arr, 0, 9 - 1);
+    quickSort1(arr, 0, 9 - 1);
 
     cout << "Sorted array : ";
     for (int i = 0; i < 9; i++)
