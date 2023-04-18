@@ -68,6 +68,30 @@ node *search(node *root, int x) {
     return p;
     // thuc hien chen
 }
+void deleteNode(node* root,int x){
+    if(root != nullptr){
+        node *p = root;
+        node *parent = nullptr;
+        while (p != nullptr && p->key != x) {
+            parent = p;
+            if (p->key > x) {
+                p = p->left;
+            } else {
+                p = p->right;
+            }
+        }
+        if (p != nullptr) {
+            if (p->left == nullptr && p->right == nullptr) {
+                if(parent->key > p->key){
+                    parent->left = nullptr;
+                }else {
+                    parent->right = nullptr;
+                }
+                delete(p);
+            }
+        }
+    }
+}
 
 int main() {
     node *root;
@@ -78,16 +102,22 @@ int main() {
     insertNode(root, 40);
     insertNode(root, 12);
     insertNode(root, 90);
+
     lnr(root);
-    if(search(root,90) != NULL){
-        cout << "Tim thay 90" << "\n";
-    } else {
-        cout << "Khong Tim thay 90" << "\n";
-    }
-    if(search(root,99) != NULL){
-        cout << "Tim thay 99" << "\n";
-    } else {
-        cout << "Khong Tim thay 99" << "\n";
-    }
+    cout << endl;
+
+    deleteNode(root,90);
+    lnr(root);
+    cout << endl;
+//    if(search(root,90) != NULL){
+//        cout << "Tim thay 90" << "\n";
+//    } else {
+//        cout << "Khong Tim thay 90" << "\n";
+//    }
+//    if(search(root,99) != NULL){
+//        cout << "Tim thay 99" << "\n";
+//    } else {
+//        cout << "Khong Tim thay 99" << "\n";
+//    }
     return 0;
 }
