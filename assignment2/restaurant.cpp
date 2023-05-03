@@ -62,7 +62,6 @@ void reg(string command) {
     }
     string binary = "";
     HuffmanCodes(arr,arrFreq,size,&binary);
-    cout << binary << endl;
     string newBinary = "";
     int count = 16;
     for(int i = binary.size(); i > 0 ;i--){
@@ -73,8 +72,9 @@ void reg(string command) {
         }
         count--;
     }
+    cout << newBinary << endl;
     int binaryDecimal = stoi(newBinary);
-    cout <<  binaryToDecimal(binaryDecimal) << endl;
+//    cout << binaryToDecimal(binaryDecimal) << endl;
 }
 
 struct MinHNode *newNode(char item, unsigned freq) {
@@ -213,7 +213,6 @@ void HuffmanCodes(char item[], int freq[], int size,string *binary) {
     struct MinHNode *root = buildHfTree(item, freq, size);
 
     int arr[MAX_TREE_HT], top = 0;
-//    string binary = "";
     printHCodes(root, arr, top, binary);
 }
 
