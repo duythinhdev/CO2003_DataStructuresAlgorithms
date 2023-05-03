@@ -10,7 +10,7 @@ void reg(string command);
 void clearCommandData(string *line);
 int buildArrayWithFrequency(string name, int (&newArray)[100]);
 void HuffmanCodes(char item[], int freq[], int size, string* binary);
-int binaryToDecimal(int binary);
+int binaryToDecimal(long long binary);
 
 struct MinHNode {
     unsigned freq;
@@ -72,9 +72,9 @@ void reg(string command) {
         }
         count--;
     }
-    cout << newBinary << endl;
-    int binaryDecimal = stoi(newBinary);
-//    cout << binaryToDecimal(binaryDecimal) << endl;
+    long long binaryDecimal = stoll(newBinary);
+    int result = binaryToDecimal(binaryDecimal);
+    cout << result << endl;
 }
 
 struct MinHNode *newNode(char item, unsigned freq) {
@@ -94,13 +94,12 @@ struct MinH *createMinH(unsigned capacity) {
     minHeap->array = (struct MinHNode **)malloc(minHeap->capacity * sizeof(struct MinHNode *));
     return minHeap;
 }
-
-void printArray(int arr[], int n) {
-    int i;
-    for (i = 0; i < n; ++i)
-        cout << arr[i];
-    cout << "\n";
-}
+//void printArray(int arr[], int n) {
+//    int i;
+//    for (i = 0; i < n; ++i)
+//        cout << arr[i];
+//    cout << "\n";
+//}
 void swapMinHNode(struct MinHNode **a, struct MinHNode **b) {
     struct MinHNode *t = *a;
     *a = *b;
@@ -228,14 +227,14 @@ int buildArrayWithFrequency(string name, int (&newArray)[100]){
     return size;
 }
 
-int binaryToDecimal(int n)
+int binaryToDecimal(long long n)
 {
-    int num = n;
+    long long num = n;
     int dec_value = 0;
 
     int base = 1;
 
-    int temp = num;
+    long long temp = num;
     while (temp) {
         int last_digit = temp % 10;
         temp = temp / 10;
