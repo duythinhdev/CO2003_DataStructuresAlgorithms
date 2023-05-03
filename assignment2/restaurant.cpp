@@ -10,6 +10,7 @@ void reg(string command);
 void clearCommandData(string *line);
 int buildArrayWithFrequency(string name, int (&newArray)[100]);
 void HuffmanCodes(char item[], int freq[], int size, string* binary);
+int binaryToDecimal(int binary);
 
 struct MinHNode {
     unsigned freq;
@@ -72,7 +73,8 @@ void reg(string command) {
         }
         count--;
     }
-    cout << newBinary << endl;
+    int binaryDecimal = stoi(newBinary);
+    cout <<  binaryToDecimal(binaryDecimal) << endl;
 }
 
 struct MinHNode *newNode(char item, unsigned freq) {
@@ -227,6 +229,25 @@ int buildArrayWithFrequency(string name, int (&newArray)[100]){
     return size;
 }
 
+int binaryToDecimal(int n)
+{
+    int num = n;
+    int dec_value = 0;
+
+    int base = 1;
+
+    int temp = num;
+    while (temp) {
+        int last_digit = temp % 10;
+        temp = temp / 10;
+
+        dec_value += last_digit * base;
+
+        base = base * 2;
+    }
+
+    return dec_value;
+}
 void clearCommandData(string *command) {
     int end = command->find(" ");
     command->erase(command->begin(), command->begin() + end + 1);
