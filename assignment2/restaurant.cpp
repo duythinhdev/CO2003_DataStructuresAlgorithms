@@ -9,7 +9,7 @@
 void reg(string command);
 void clearCommandData(string *line);
 int buildArrayWithFrequency(string name, int (&newArray)[100]);
-void HuffmanCodes(char item[], int freq[], int size);
+void HuffmanCodes(char item[], int freq[], int size, string* binary);
 
 struct MinHNode {
     unsigned freq;
@@ -54,14 +54,25 @@ void reg(string command) {
     int arrFreq[size];
     for(int i = 0 ; i < 100;i++){
         if(newArray[i] > 0){
-//            cout<<char(i + 'A');
-//            cout<<newArray[i];
             arr[j] = char(i + 'A');
             arrFreq[j] = newArray[i];
             j++;
         }
     }
-    HuffmanCodes(arr,arrFreq,size);
+    string binary = "";
+    HuffmanCodes(arr,arrFreq,size,&binary);
+    cout << binary << endl;
+    string newBinary = "";
+    int count = 16;
+    for(int i = binary.size(); i > 0 ;i--){
+        if(count == 0){
+            break;
+        }else {
+            newBinary = binary[i] + newBinary;
+        }
+        count--;
+    }
+    cout << newBinary << endl;
 }
 
 struct MinHNode *newNode(char item, unsigned freq) {
@@ -179,28 +190,29 @@ struct MinHNode *buildHfTree(char item[], int freq[], int size) {
     }
     return extractMin(minHeap);
 }
-void printHCodes(struct MinHNode *root, int arr[], int top) {
+void printHCodes(struct MinHNode *root, int arr[], int top,string* binary) {
     if (root->left) {
         arr[top] = 0;
-        printHCodes(root->left, arr, top + 1);
+        printHCodes(root->left, arr, top + 1, binary);
     }
 
     if (root->right) {
         arr[top] = 1;
-        printHCodes(root->right, arr, top + 1);
+        printHCodes(root->right, arr, top + 1,binary);
     }
     if (isLeaf(root)) {
-        cout << root->item << "  | ";
-        printArray(arr, top);
+        int i;
+        for (i = 0; i < top; ++i)
+           *binary += std::to_string(arr[i]);
     }
 }
 
-void HuffmanCodes(char item[], int freq[], int size) {
+void HuffmanCodes(char item[], int freq[], int size,string *binary) {
     struct MinHNode *root = buildHfTree(item, freq, size);
 
     int arr[MAX_TREE_HT], top = 0;
-
-    printHCodes(root, arr, top);
+//    string binary = "";
+    printHCodes(root, arr, top, binary);
 }
 
 
