@@ -2,12 +2,13 @@
 
 #define ACTION_REG "REG"
 #define ACTION_CLE "CLE"
-#define ACTION_PRINT_AVL ""
+#define ACTION_PRINT_HT "PrintHT"
 #define MAX_TREE_HT 50
 #define STR_NULL " "
-#define CAPACITY 50000
 
 void reg(string command);
+void cle(string command);
+void printHT();
 void clearCommandData(string *line);
 int buildArrayWithFrequency(string name, int (&newArray)[100]);
 void HuffmanCodes(char item[], int freq[], int size, string* binary);
@@ -26,145 +27,26 @@ struct MinH {
     unsigned capacity;
     struct MinHNode **array;
 };
-unsigned long hash_function(char *str)
-{
-    unsigned long i = 0;
-
-    for (int j = 0; str[j]; j++)
-        i += str[j];
-
-    return i % CAPACITY;
+struct DataItem {
+    string data;
+    int key;
+};
+DataItem* hashTable[MAXSIZE / 2];
+int hashCode(int key){
+    return key % (MAXSIZE / 2);
 }
-// Defines the HashTable item.
-typedef struct Ht_item
-{
-    char *key;
-    char *value;
-} Ht_item;
-
-// Defines the LinkedList.
-typedef struct LinkedList
-{
-    Ht_item *item;
-    LinkedList *next;
-} LinkedList;
-
-// Defines the HashTable.
-typedef struct HashTable
-{
-    // Contains an array of pointers to items.
-    Ht_item **items;
-    LinkedList **overflow_buckets;
-    int size;
-    int count;
-} HashTable;
-
-LinkedList *allocate_list()
-{
-    // Allocates memory for a LinkedList pointer.
-    LinkedList *list = (LinkedList *)malloc(sizeof(LinkedList));
-    return list;
-}
-
-LinkedList *linkedlist_insert(LinkedList *list, Ht_item *item)
-{
-    // Inserts the item onto the LinkedList.
-    if (!list)
-    {
-        LinkedList *head = allocate_list();
-        head->item = item;
-        head->next = NULL;
-        list = head;
-        return list;
-    }
-    else if (list->next == NULL)
-    {
-        LinkedList *node = allocate_list();
-        node->item = item;
-        node->next = NULL;
-        list->next = node;
-        return list;
+void insert(int key,string data, int hashIndex){
+//    struct DataItem *item = (struct DataItem*) malloc(sizeof(struct DataItem));
+    DataItem item;
+    item.data = data;
+    item.key = key;
+//    int hashIndex = hashCode(key);
+    while(hashTable[hashIndex] != NULL && hashTable[hashIndex]->key != -1){
+        ++hashIndex;
+        hashIndex %= MAXSIZE;
     }
 
-    LinkedList *temp = list;
-
-    while (temp->next->next)
-    {
-        temp = temp->next;
-    }
-
-    LinkedList *node = allocate_list();
-    node->item = item;
-    node->next = NULL;
-    temp->next = node;
-    return list;
-}
-Ht_item *create_item(char *key, char *value)
-{
-    // Creates a pointer to a new HashTable item.
-    Ht_item *item = (Ht_item *)malloc(sizeof(Ht_item));
-    item->key = (char *)malloc(strlen(key) + 1);
-    item->value = (char *)malloc(strlen(value) + 1);
-    strcpy(item->key, key);
-    strcpy(item->value, value);
-    return item;
-}
-void free_item(Ht_item *item)
-{
-    free(item->key);
-    free(item->value);
-    free(item);
-}
-void handle_collision(HashTable *table, unsigned long index, Ht_item *item)
-{
-    LinkedList *head = table->overflow_buckets[index];
-
-    if (head == NULL)
-    {
-        head = allocate_list();
-        head->item = item;
-        table->overflow_buckets[index] = head;
-        return;
-    }
-    else
-    {
-        // Insert to the list.
-        table->overflow_buckets[index] = linkedlist_insert(head, item);
-        return;
-    }
-}
-void ht_insert(HashTable *table, char *key, char *value)
-{
-    Ht_item *item = create_item(key, value);
-
-    int index = hash_function(key);
-
-    Ht_item *current_item = table->items[index];
-
-    if (current_item == NULL)
-    {
-        if (table->count == table->size)
-        {
-            printf("Insert Error: Hash Table is full\n");
-            free_item(item);
-            return;
-        }
-        table->items[index] = item;
-        table->count++;
-    }
-    else
-    {
-        if (strcmp(current_item->key, key) == 0)
-        {
-            strcpy(table->items[index]->value, value);
-            return;
-        }
-        else
-        {
-            handle_collision(table, index, item);
-            return;
-        }
-    }
+    hashTable[hashIndex] = &item;
 }
 void simulate(string filename)
 {
@@ -177,6 +59,12 @@ void simulate(string filename)
             clearCommandData(&line);
             if (commandName == ACTION_REG) {
                 reg(line);
+            }
+            if (commandName == ACTION_CLE) {
+                cle(line);
+            }
+            if (commandName == ACTION_PRINT_HT) {
+                printHT();
             }
         }
         myfile.close();
@@ -218,17 +106,33 @@ void reg(string command) {
     int result = binaryToDecimal(binaryDecimal);
     int id = result % MAXSIZE + 1;
     if(result % 2 == 0){
-        handleMountain(name,id);
+        handleMountain(name,result);
     }else {
-        handleSea(name,id);
+        handleSea(name,result);
     }
-    cout << result << endl;
 }
-void handleSea(string name,int id){
+void handleSea(string name,int result){
+    int hashTableIndex = hashCode(result);
+    insert(result,name,hashTableIndex);
+}
+void handleMountain(string name,int result){
 
 }
-void handleMountain(string name,int id){
-
+void cle(string command){
+    int num;
+    num = stoi(command.substr(0, command.find(" ")));
+    if(num < 1){
+        for(int i = 0; i < sizeof(hashTable);i++){
+            hashTable[i] = nullptr;
+        }
+        return;
+    }
+}
+void printHT(){
+    cout << '12';
+    for(int i = 0; i < sizeof(hashTable);i++){
+        cout<< i << "-" << hashTable[i]->key <<"/n";
+    }
 }
 struct MinHNode *newNode(char item, unsigned freq) {
     struct MinHNode *temp = (struct MinHNode *)malloc(sizeof(struct MinHNode));
