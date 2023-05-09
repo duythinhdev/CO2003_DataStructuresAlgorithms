@@ -8,11 +8,9 @@ using namespace std;
 int findMax(int* arr,int length){
     if(length == 0){
         return -1;
-    }
-    if(length == 1){
+    }if(length == 1){
         return arr[0];
-    }
-    else {
+    }else {
         if(arr[length - 1] > findMax(arr,length - 1)){
             return arr[length -1];
         }
@@ -21,18 +19,25 @@ int findMax(int* arr,int length){
         }
     }
 }
-int findMax1(int* arr,int length){
-    if(length == 0){
+int findMax1(int* arr,int length) {
+    if(length == 0 ){
         return -1;
-    } if(length == 1){
+    }if(length == 1){
         return arr[0];
-    } else {
-        if(arr[length - 1] > findMax(arr,length - 1)){
-            return arr[length -1];
+    }else {
+        if(arr[length -1] > findMax1(arr,length - 1)){
+            return arr[length - 1];
+        } else {
+            return findMax1(arr,length-1);
         }
-        else {
-            return findMax(arr,length-1);
-        }
+    }
+}
+void printArray(int n){
+    if(n == 0){
+        cout << "0";
+    }else {
+        printArray(n - 1);
+        cout << ", " << n;
     }
 }
 int sum(int n){
@@ -135,74 +140,61 @@ void quickSort(int a[], int l, int r){
         quickSort(a, l, j);
     }
 }
-void quickSort1(int a[],int l,int r){
-    int p = a[(l+r)/2];
-    int i  = l;
-    int j = r;
-    while( i < j){
-        while(a[i] < p){
-            i++;
-        }
-        while(a[j] > p){
-            j--;
-        }
-        if( i <= j){
-            int temp = a[i];
-            a[i] = a[j];
-            a[j] = temp;
-            i++;
-            j--;
-        }
+
+int gcd(int a, int b) {
+    if (b == 0) {
+        return a;
     }
-    if(i < r){
-        quickSort(a, i, r);
-    }
-    if (l < j){
-        quickSort(a, l, j);
-    }
+    return gcd(b, a % b);
+}
+int findLCM(int a, int b) {
+    int lcm = (a * b) / gcd(a, b);
+    return lcm;
 }
 
 int main() {
-     int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
-     cout << findMax1(arr, 10);
+//     int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
+//     cout << findMax1(arr, 10);
+     cout <<  findLCM(10, 102);
     // cout << sumArray(arr,10);
     // cout << sum(25);
-//    int myarray[10] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
-//    int arr_size = sizeof(myarray)/sizeof(myarray[0]);
-    //int arr_size = 5;
+    //    int myarray[10] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
+    //    int arr_size = sizeof(myarray)/sizeof(myarray[0]);
+        //int arr_size = 5;
 
-//    cout << "Enter 5 integers in any order: " << endl;
-//    for (int i = 0; i < arr_size; i++) {
-//        cin >> myarray[i];
-//    }
-//    cout << "Before Sorting" << endl;
-//    for (int i = 0; i < arr_size; i++) {
-//        cout << myarray[i] << " ";
-//    }
-//    cout << endl;
-//    mergeSort(myarray, 0, (arr_size - 1)); // mergesort(arr,left,right) called
-//
-//    cout << "After Sorting" << endl;
-//    for (int i = 0; i < arr_size; i++) {
-//        cout << myarray[i] << " ";
-//    }
+    //    cout << "Enter 5 integers in any order: " << endl;
+    //    for (int i = 0; i < arr_size; i++) {
+    //        cin >> myarray[i];
+    //    }
+    //    cout << "Before Sorting" << endl;
+    //    for (int i = 0; i < arr_size; i++) {
+    //        cout << myarray[i] << " ";
+    //    }
+    //    cout << endl;
+    //    mergeSort(myarray, 0, (arr_size - 1)); // mergesort(arr,left,right) called
+    //
+    //    cout << "After Sorting" << endl;
+    //    for (int i = 0; i < arr_size; i++) {
+    //        cout << myarray[i] << " ";
+    //    }
 
 
-//    int arr[9] = {5, 12, 7, 1, 13, 2 ,23, 11, 18};
-//
-//    cout << "Unsorted array : ";
-//    for (int i = 0; i < 9; i++)
-//    {
-//        cout << arr[i] << " ";
-//    }
-//    printf("\n");
-//
-//    quickSort1(arr, 0, 9 - 1);
-//
-//    cout << "Sorted array : ";
-//    for (int i = 0; i < 9; i++)
-//    {
-//        cout << arr[i] << " ";
-//    }
-//    return 0;
+    //    int arr[9] = {5, 12, 7, 1, 13, 2 ,23, 11, 18};
+    //
+    //    cout << "Unsorted array : ";
+    //    for (int i = 0; i < 9; i++)
+    //    {
+    //        cout << arr[i] << " ";
+    //    }
+    //    printf("\n");
+    //
+    //    quickSort1(arr, 0, 9 - 1);
+    //
+    //    cout << "Sorted array : ";
+    //    for (int i = 0; i < 9; i++)
+    //    {
+    //        cout << arr[i] << " ";
+    //    }
+    //    printArray(5);
+    return 0;
 }
