@@ -151,11 +151,31 @@ int findLCM(int a, int b) {
     int lcm = (a * b) / gcd(a, b);
     return lcm;
 }
-
+int strLen(char* str) {
+    if (*str == '\0') {
+        return 0;
+    } else {
+        return 1 + strLen(str + 1);
+    }
+}
+string reverseSentence(string s) {
+    size_t space_index = s.find(' ');
+    if (space_index == string::npos) {
+        return s;
+    }
+    else {
+        string first_word = s.substr(0, space_index);
+        string rest_of_sentence = s.substr(space_index + 1);
+        return reverseSentence(rest_of_sentence) + ' ' + first_word;
+    }
+}
 int main() {
 //     int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
 //     cout << findMax1(arr, 10);
-     cout <<  findLCM(10, 102);
+//     cout <<  findLCM(10, 102);
+//    char str[] = "Truong DH Bach Khoa";
+//    cout << strLen(str);
+    cout << reverseSentence("data structure and algorithm is scary")
     // cout << sumArray(arr,10);
     // cout << sum(25);
     //    int myarray[10] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
