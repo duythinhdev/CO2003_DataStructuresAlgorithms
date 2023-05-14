@@ -17,22 +17,22 @@ void handleSea(string name,int id);
 void handleMountain(string name,int id);
 
 struct MinHNode {
-    unsigned freq;
+    int freq;
     char item;
     struct MinHNode *left, *right;
 };
-
 struct MinH {
-    unsigned size;
-    unsigned capacity;
+    int size;
+    int capacity;
     struct MinHNode **array;
 };
 struct DataItem {
     string data;
     int key;
 };
+
 DataItem* hashTable[MAXSIZE / 2];
-int hashCode(int key){
+int hashCode(int key) {
     return key % (MAXSIZE / 2);
 }
 void insert(int key,string data, int hashIndex){
@@ -41,7 +41,10 @@ void insert(int key,string data, int hashIndex){
     item.data = data;
     item.key = key;
 //    int hashIndex = hashCode(key);
-    while(hashTable[hashIndex] != NULL && hashTable[hashIndex]->key != -1){
+//    if (hashIndex > MAXSIZE /2) {
+//        return;
+//    }
+    while(hashIndex < MAXSIZE /2 && hashTable[hashIndex] != NULL && hashTable[hashIndex]->key != -1){
         ++hashIndex;
         hashIndex %= MAXSIZE;
     }
@@ -106,10 +109,13 @@ void reg(string command) {
     int result = binaryToDecimal(binaryDecimal);
     int id = result % MAXSIZE + 1;
     if(result % 2 == 0){
+        cout<<id<<"-"<<result<<"-"<<2<<endl;
         handleMountain(name,result);
     }else {
+        cout<<id<<"-"<<result<<"-"<<1<<endl;
         handleSea(name,result);
     }
+
 }
 void handleSea(string name,int result){
     int hashTableIndex = hashCode(result);
@@ -119,22 +125,23 @@ void handleMountain(string name,int result){
 
 }
 void cle(string command){
-    int num;
-    num = stoi(command.substr(0, command.find(" ")));
-    if(num < 1){
-        for(int i = 0; i < sizeof(hashTable);i++){
-            hashTable[i] = nullptr;
-        }
-        return;
-    }
+//    int num;
+//    num = stoi(command.substr(0, command.find(" ")));
+//    if(num < 1){
+//        for(int i = 0; i < MAXSIZE / 2;i++){
+//            hashTable[i] = nullptr;
+//        }
+//        return;
+//    }
 }
 void printHT(){
-    cout << '12';
-    for(int i = 0; i < sizeof(hashTable);i++){
-        cout<< i << "-" << hashTable[i]->key <<"/n";
+    for(int i = 0; i < MAXSIZE / 2;i++){
+        if (hashTable[i] != NULL) {
+            cout<< i << "-" << hashTable[i]->key << endl;
+        }
     }
 }
-struct MinHNode *newNode(char item, unsigned freq) {
+struct MinHNode *newNode(char item, int freq) {
     struct MinHNode *temp = (struct MinHNode *)malloc(sizeof(struct MinHNode));
 
     temp->left = temp->right = NULL;
@@ -144,7 +151,7 @@ struct MinHNode *newNode(char item, unsigned freq) {
     return temp;
 }
 
-struct MinH *createMinH(unsigned capacity) {
+struct MinH *createMinH(int capacity) {
     struct MinH *minHeap = (struct MinH *)malloc(sizeof(struct MinH));
     minHeap->size = 0;
     minHeap->capacity = capacity;
@@ -275,7 +282,9 @@ void HuffmanCodes(char item[], int freq[], int size,string *binary) {
 
 int buildArrayWithFrequency(string name, int (&newArray)[100]){
     int size = 0;
-    for(int i = 0; i < name.size();i++){
+    const char* names = name.c_str();
+    int length = strlen(names);
+    for(int i = 0; i < length;i++){
         if (newArray[name[i] - 'A'] == 0){
             size += 1;
         }

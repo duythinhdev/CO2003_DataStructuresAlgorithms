@@ -39,6 +39,14 @@ void printArray(int n){
         cout << ", " << n;
     }
 }
+void printArray1(int n){
+    if(n == 0){
+        cout << "0";
+    }else{
+        printArray(n - 1);
+        cout << ", " << n;
+    }
+}
 int sum(int n){
     if(n == 1){
         return 1;
@@ -157,12 +165,18 @@ int strLen(char* str) {
         return 1 + strLen(str + 1);
     }
 }
-int strLen1(char* str){
-    if(*str == '\0'){
-        return 0;
-    }else {
-        return 1 + strLen(str + 1);
+
+void printPattern(int n) {
+    if (n <= 0) {
+        cout << n;
+        return;
     }
+    cout << n << " ";
+    printPattern(n - 5);
+    if( n == -1){
+        printPattern(n + 5);
+    }
+    cout << " " << n;
 }
 string reverseSentence(string s) {
     size_t space_index = s.find(' ');
@@ -175,12 +189,22 @@ string reverseSentence(string s) {
         return reverseSentence(rest_of_sentence) + ' ' + first_word;
     }
 }
+string reverseSentence1(string s){
+    size_t space_index = s.find(' ');
+    if(space_index == string::npos){
+        return s;
+    }  else {
+        string first_word = s.substr(0, space_index);
+        string rest_of_sentence = s.substr(space_index + 1);
+        return reverseSentence1(rest_of_sentence) + ' ' + first_word;
+    }
+}
 int main() {
     //     int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
     //     cout << findMax1(arr, 10);
     //     cout <<  findLCM(10, 102);
-    char str[] = "Truong DH Bach Khoa";
-    cout << strLen1(str);
+    //    char str[] = "Truong DH Bach Khoa";
+    //    cout << strLen(str);
     // cout << reverseSentence("data structure and algorithm is scary");
     // cout << sumArray(arr,10);
     // cout << sum(25);
