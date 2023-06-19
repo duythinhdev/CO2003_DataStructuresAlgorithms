@@ -31,6 +31,19 @@ int findMax1(int* arr,int length) {
         }
     }
 }
+int findMax2(int* arr,int length){
+    if(length == 0){
+        return -1;
+    }if(length == 1){
+        return arr[0];
+    }else {
+        if(arr[length - 1] > findMax2(arr, length -1)){
+            return arr[length - 1];
+        } else {
+            return findMax1(arr,length-1);
+        }
+    }
+}
 void printArray(int n){
     if(n == 0){
         cout << "0";

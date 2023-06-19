@@ -21,6 +21,21 @@ int findMax(int* arr,int length){
         }
     }
 }
+int findMax(int* arr,int length){
+    if(length === 0){
+        return -1;
+    }
+    if(length == 1){
+        return arr[0];
+    }
+    else {
+        if(arr[length - 1] > findMax(arr,length - 1)){
+            return arr[length -1];
+        }else {
+            return findMax(arr,length-1);
+        }
+    }
+}
 int sum(int n){
     if(n == 1){
         return 1;
