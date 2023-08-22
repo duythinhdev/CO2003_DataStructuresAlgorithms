@@ -213,8 +213,8 @@ string reverseSentence1(string s){
     }
 }
 int main() {
-    //     int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
-    //     cout << findMax1(arr, 10);
+    int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
+    cout << findMax1(arr, 10);
     //     cout <<  findLCM(10, 102);
     //    char str[] = "Truong DH Bach Khoa";
     //    cout << strLen(str);

@@ -1,15 +1,11 @@
 #include<iostream>
-#include<conio.h>
-#include<vector>
-
 using namespace std;
 
 
 int findMax(int* arr,int length){
     if(length == 0){
         return -1;
-    }
-    if(length == 1){
+    }if(length == 1){
         return arr[0];
     }
     else {
@@ -17,21 +13,6 @@ int findMax(int* arr,int length){
             return arr[length -1];
         }
         else {
-            return findMax(arr,length-1);
-        }
-    }
-}
-int findMax(int* arr,int length){
-    if(length === 0){
-        return -1;
-    }
-    if(length == 1){
-        return arr[0];
-    }
-    else {
-        if(arr[length - 1] > findMax(arr,length - 1)){
-            return arr[length -1];
-        }else {
             return findMax(arr,length-1);
         }
     }
@@ -164,46 +145,46 @@ void quickSort1(int a[],int l,int r){
 }
 
 int main() {
-    // int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
-    // cout << findMax(arr, 10);
+     int arr[] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
+     cout << findMax(arr, 10);
     // cout << sumArray(arr,10);
     // cout << sum(25);
-//    int myarray[10] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
-//    int arr_size = sizeof(myarray)/sizeof(myarray[0]);
-    //int arr_size = 5;
+    //    int myarray[10] = { 10, 5, 7, 9, 15, 6, 11, 8, 12, 2 };
+    //    int arr_size = sizeof(myarray)/sizeof(myarray[0]);
+        //int arr_size = 5;
 
-//    cout << "Enter 5 integers in any order: " << endl;
-//    for (int i = 0; i < arr_size; i++) {
-//        cin >> myarray[i];
-//    }
-//    cout << "Before Sorting" << endl;
-//    for (int i = 0; i < arr_size; i++) {
-//        cout << myarray[i] << " ";
-//    }
-//    cout << endl;
-//    mergeSort(myarray, 0, (arr_size - 1)); // mergesort(arr,left,right) called
+    //    cout << "Enter 5 integers in any order: " << endl;
+    //    for (int i = 0; i < arr_size; i++) {
+    //        cin >> myarray[i];
+    //    }
+    //    cout << "Before Sorting" << endl;
+    //    for (int i = 0; i < arr_size; i++) {
+    //        cout << myarray[i] << " ";
+    //    }
+    //    cout << endl;
+    //    mergeSort(myarray, 0, (arr_size - 1)); // mergesort(arr,left,right) called
+    //
+    //    cout << "After Sorting" << endl;
+    //    for (int i = 0; i < arr_size; i++) {
+    //        cout << myarray[i] << " ";
+    //    }
+
+
+//    int arr[9] = {5, 12, 7, 1, 13, 2 ,23, 11, 18};
 //
-//    cout << "After Sorting" << endl;
-//    for (int i = 0; i < arr_size; i++) {
-//        cout << myarray[i] << " ";
+//    cout << "Unsorted array : ";
+//    for (int i = 0; i < 9; i++)
+//    {
+//        cout << arr[i] << " ";
 //    }
-
-
-    int arr[9] = {5, 12, 7, 1, 13, 2 ,23, 11, 18};
-
-    cout << "Unsorted array : ";
-    for (int i = 0; i < 9; i++)
-    {
-        cout << arr[i] << " ";
-    }
-    printf("\n");
-
-    quickSort1(arr, 0, 9 - 1);
-
-    cout << "Sorted array : ";
-    for (int i = 0; i < 9; i++)
-    {
-        cout << arr[i] << " ";
-    }
+//    printf("\n");
+//
+//    quickSort1(arr, 0, 9 - 1);
+//
+//    cout << "Sorted array : ";
+//    for (int i = 0; i < 9; i++)
+//    {
+//        cout << arr[i] << " ";
+//    }
     return 0;
 }
